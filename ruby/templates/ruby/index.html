@@ -1,0 +1,256 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ruby</title>
+    <link rel="stylesheet" href="{% static 'ruby/home_styles/index.css' %}">
+</head>
+<body>
+<nav class="top_nav">
+    <div class="nav_topic">
+        <i style="color:#054864;">RUBY-X</i>
+    </div>
+    {% if login_status == False %}
+    <div class="nav_auth">
+        <div style="display: none" id="alert-specific">False</div>
+        <div style="padding: 19px 15px;font-size: 20px;">
+            <a href="{% url 'login' %}" style="color: #054864;text-decoration: none"><i>Signin</i></a>
+        </div>
+        <div style="padding: 19px 15px;font-size: 20px;">
+            <a href="{% url 'signup' %}" style="color: #054864;text-decoration: none"><i>Signup</i></a>
+        </div>
+    </div>
+        {% else %}
+        <div style="display: none" id="alert-specific">True</div>
+        <div style="display: flex;justify-content: end;">
+            <div style="padding: 19px 15px;font-size: 20px;">
+                <a href="" style="color: #054864;text-decoration: none"><i>{{ username }}</i></a>
+            </div>
+            <div style="padding: 19px 15px;font-size: 20px;">
+                <a href="{% url 'logout' %}" style="color: #054864;text-decoration: none"><i>Logout</i></a>
+            </div>
+        </div>
+    {% endif %}
+</nav>
+
+<div class="message_box" id="division_box">
+    <div class="message_selection">
+        <div style="display: flex;width: 50%;height: 100%;">
+            <div class="text_selector selector active">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-chat-quote-fill" viewBox="0 0 16 16">
+  <path d="M16 8c0 3.866-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.584.296-1.925.864-4.181 1.234-.2.032-.352-.176-.273-.362.354-.836.674-1.95.77-2.966C.744 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7zM7.194 6.766a1.688 1.688 0 0 0-.227-.272 1.467 1.467 0 0 0-.469-.324l-.008-.004A1.785 1.785 0 0 0 5.734 6C4.776 6 4 6.746 4 7.667c0 .92.776 1.666 1.734 1.666.343 0 .662-.095.931-.26-.137.389-.39.804-.81 1.22a.405.405 0 0 0 .011.59c.173.16.447.155.614-.01 1.334-1.329 1.37-2.758.941-3.706a2.461 2.461 0 0 0-.227-.4zM11 9.073c-.136.389-.39.804-.81 1.22a.405.405 0 0 0 .012.59c.172.16.446.155.613-.01 1.334-1.329 1.37-2.758.942-3.706a2.466 2.466 0 0 0-.228-.4 1.686 1.686 0 0 0-.227-.273 1.466 1.466 0 0 0-.469-.324l-.008-.004A1.785 1.785 0 0 0 10.07 6c-.957 0-1.734.746-1.734 1.667 0 .92.777 1.666 1.734 1.666.343 0 .662-.095.931-.26z"/>
+</svg>
+            </div>
+            <div class="voice_selector selector">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-bar-chart-line-fill" viewBox="0 0 16 16">
+  <path d="M11 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v12h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h1V7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7h1V2z"/>
+</svg>
+            </div>
+        </div>
+    </div>
+    <div style="width: 100%;height: 98%;padding: 10px">
+        <div class="recent_textarea" id="recent_textarea" style="     width: 97%;height: 77%;overflow-y: scroll;margin-bottom: 14px;">
+        </div>
+        <div class="new_message" style="width: 95%;height: 8%;display: flex">
+            <div style="width: 85%;height: 100%;overflow: hidden;border-radius: 17px 0px 0px 17px;">
+                <input type="text" style="    width: 100%;font-family: monospace;height: 100%;border: none;background: aliceblue" id="text_context">
+            </div>
+            {% csrf_token %}
+            <div style="width: 15%;height: 100%;border-radius: 0px 17px 17px 0px;" class="submit_message" onclick="sendMessage()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" fill="currentColor" class="bi bi-rocket-takeoff-fill" viewBox="0 0 16 16" style="margin: 13px 18px">
+  <path d="M12.17 9.53c2.307-2.592 3.278-4.684 3.641-6.218.21-.887.214-1.58.16-2.065a3.578 3.578 0 0 0-.108-.563 2.22 2.22 0 0 0-.078-.23V.453c-.073-.164-.168-.234-.352-.295a2.35 2.35 0 0 0-.16-.045 3.797 3.797 0 0 0-.57-.093c-.49-.044-1.19-.03-2.08.188-1.536.374-3.618 1.343-6.161 3.604l-2.4.238h-.006a2.552 2.552 0 0 0-1.524.734L.15 7.17a.512.512 0 0 0 .433.868l1.896-.271c.28-.04.592.013.955.132.232.076.437.16.655.248l.203.083c.196.816.66 1.58 1.275 2.195.613.614 1.376 1.08 2.191 1.277l.082.202c.089.218.173.424.249.657.118.363.172.676.132.956l-.271 1.9a.512.512 0 0 0 .867.433l2.382-2.386c.41-.41.668-.949.732-1.526l.24-2.408Zm.11-3.699c-.797.8-1.93.961-2.528.362-.598-.6-.436-1.733.361-2.532.798-.799 1.93-.96 2.528-.361.599.599.437 1.732-.36 2.531Z"/>
+  <path d="M5.205 10.787a7.632 7.632 0 0 0 1.804 1.352c-1.118 1.007-4.929 2.028-5.054 1.903-.126-.127.737-4.189 1.839-5.18.346.69.837 1.35 1.411 1.925Z"/>
+</svg>
+            </div>
+
+        </div>
+    </div>
+
+
+</div>
+
+<footer class="footer_area">
+    <div id="message_clicker" onclick="message_box()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-chat-dots-fill" viewBox="0 0 16 16" style="margin: 8px;color:#054864;">
+  <path d="M16 8c0 3.866-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.584.296-1.925.864-4.181 1.234-.2.032-.352-.176-.273-.362.354-.836.674-1.95.77-2.966C.744 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7zM5 8a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm4 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+</svg>
+    </div>
+</footer>
+</body>
+<script   src="https://code.jquery.com/jquery-3.1.1.min.js"   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
+
+<script>
+    let flag=0;
+    function message_box(){
+        let docs=document.getElementById('alert-specific');
+        if(docs.innerText=="False"){
+            alert("Login for Using Ruby");
+        }else{
+            if (flag==0){
+                let division=document.getElementById("division_box");
+                division.style.display="block";
+                flag=1;
+            }else{
+                let division=document.getElementById("division_box");
+                division.style.display="none";
+                flag=0;
+            }
+
+        }
+
+    }
+</script>
+<script>
+    let initial_message_count=0;
+    $(document).ready(function(){
+        setInterval(function() {
+            $.ajax({
+                type: 'GET',
+                url: "getmessages",
+                success: function (response) {
+                    let count=0;
+                     for (var key in response.messages){
+                         count+=1;
+                     }
+                     if(count!=initial_message_count){
+                         count=initial_message_count;
+                         $("#recent_textarea").empty();
+                         for(var key in response.messages){
+                             let message_type=response.messages[key].message_type;
+                             let message_text=response.messages[key].message;
+                             let username=response.messages[key].username;
+                             if (message_type=="bot"){
+                                 var temp="<div style='width: 60%;background: #11cae8;min-height: 30px;border-radius: 30px;padding: 10px;font-family: monospace;margin-top: 10px;'><spam><b>RUBY : </b></spam>"+message_text+"</div>";
+                             }else{
+                                 var temp="<div style='width: 60%;background: #b091ff;min-height: 30px;border-radius: 30px;padding: 10px;font-family: monospace;margin-left: 30%;margin-top: 10px;'><spam><b>"+username+" : </b></spam>"+message_text+"</div>"
+                             }
+                             $("#recent_textarea").append(temp);
+                         }
+
+                     }
+                },
+                error: function (response) {
+                    alert('An error occured')
+                }
+            });
+        },1000);
+    });
+</script>
+
+<script>
+       function sendMessage(){
+           let message =document.getElementById("text_context").value;
+
+           $.ajax({
+            type:'POST',
+            url:'send_message',
+               data:{
+                  message:message,
+                   username:"smaple",
+                   csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+              },
+              success: function(data){
+                  console.log("sent");
+              }
+           });
+           document.getElementById("text_context").value="";
+       }
+   </script>
+</html>
+
+
+<style>
+    .top_nav{
+        position: fixed;
+        top: 0px;
+        right: 0px;
+        width: 100%;
+        height: 60px;
+        background-color: #f87017;
+        display: flex;
+        justify-content: space-between;
+    }
+    .nav_topic{
+        padding: 7px 32px;
+        font-size: 36px;
+        font-family: fantasy;
+
+    }
+    .nav_auth{
+        display: flex;
+        justify-content: end;
+    }
+    .footer_area{
+        position: fixed;
+        bottom: 0px;
+        width: 100%;
+        display: flex;
+        justify-content: end;
+    }
+    #message_clicker{
+        width: 45px;
+        height: 45px;
+        background: #f87017;
+        margin: 16px;
+        padding: 10px;
+        border-radius: 50px;
+        transition: 0.2s;
+    }
+    #message_clicker:hover{
+        cursor: grab;
+        box-shadow: 2px 2px 10px black;
+    }
+
+    .message_box{
+        display: none;
+        transition: 1s;
+
+        box-shadow: 1px 1px 19px 0px black;
+        border-radius: 11px;
+        overflow: hidden;
+        position: fixed;
+        right:50px;
+        bottom: 50px;
+        width: 450px;
+        height: 600px;
+        background: #054864;
+        z-index: 1;
+
+    }
+    .message_selection{
+        width: 100%;
+        height: 50px;
+        background: #f87017;
+    }
+    .selector{
+            width: 50%;
+        height: 68%;
+        background: #f87017;
+        text-align: center;
+        padding-top: 16px;
+
+    }
+    .selector:hover{
+        background: #f56b14;
+        border-bottom: 4px solid black;
+        height: 62%;
+        cursor: grab;
+    }
+    .active{
+        border-bottom: 4px solid black;
+        height: 62%;
+
+    }
+    .submit_message{
+        background: #f56b14;
+        color: aliceblue;
+    }
+    .submit_message:hover{
+        color: #f56b14;
+        background: whitesmoke;
+        cursor: grab;
+    }
+
+
+</style>

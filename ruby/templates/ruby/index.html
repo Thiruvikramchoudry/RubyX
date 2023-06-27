@@ -37,22 +37,22 @@
 <div class="message_box" id="division_box">
     <div class="message_selection">
         <div style="display: flex;width: 50%;height: 100%;">
-            <div class="text_selector selector active">
+            <div class="text_selector selector active" id="text_selector" onclick="change_session(0)">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-chat-quote-fill" viewBox="0 0 16 16">
   <path d="M16 8c0 3.866-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.584.296-1.925.864-4.181 1.234-.2.032-.352-.176-.273-.362.354-.836.674-1.95.77-2.966C.744 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7zM7.194 6.766a1.688 1.688 0 0 0-.227-.272 1.467 1.467 0 0 0-.469-.324l-.008-.004A1.785 1.785 0 0 0 5.734 6C4.776 6 4 6.746 4 7.667c0 .92.776 1.666 1.734 1.666.343 0 .662-.095.931-.26-.137.389-.39.804-.81 1.22a.405.405 0 0 0 .011.59c.173.16.447.155.614-.01 1.334-1.329 1.37-2.758.941-3.706a2.461 2.461 0 0 0-.227-.4zM11 9.073c-.136.389-.39.804-.81 1.22a.405.405 0 0 0 .012.59c.172.16.446.155.613-.01 1.334-1.329 1.37-2.758.942-3.706a2.466 2.466 0 0 0-.228-.4 1.686 1.686 0 0 0-.227-.273 1.466 1.466 0 0 0-.469-.324l-.008-.004A1.785 1.785 0 0 0 10.07 6c-.957 0-1.734.746-1.734 1.667 0 .92.777 1.666 1.734 1.666.343 0 .662-.095.931-.26z"/>
 </svg>
             </div>
-            <div class="voice_selector selector">
+            <div class="voice_selector selector" id="voice_selector" onclick="change_session(1)">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-bar-chart-line-fill" viewBox="0 0 16 16">
   <path d="M11 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v12h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h1V7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7h1V2z"/>
 </svg>
             </div>
         </div>
     </div>
-    <div style="width: 100%;height: 98%;padding: 10px">
-        <div class="recent_textarea" id="recent_textarea" style="     width: 97%;height: 77%;overflow-y: scroll;margin-bottom: 14px;">
+    <div style="width: 100%;height: 98%;padding: 10px" id="chat_area">
+        <div class="recent_textarea" id="recent_textarea" style="width: 97%;height: 77%;overflow-y: scroll;margin-bottom: 14px;">
         </div>
-        <div class="new_message" style="width: 95%;height: 8%;display: flex">
+        <div class="new_message" id="new_message" style="width: 95%;height: 8%;">
             <div style="width: 85%;height: 100%;overflow: hidden;border-radius: 17px 0px 0px 17px;">
                 <input type="text" style="    width: 100%;font-family: monospace;height: 100%;border: none;background: aliceblue" id="text_context">
             </div>
@@ -64,6 +64,25 @@
 </svg>
             </div>
 
+        </div>
+        <div id="secondary" style="width: 97%;height: 65%;display: none;justify-content: center;margin-top: 20px;">
+            <div style="width: 20px;height: 90%;display: flex;flex-direction: column;justify-content: space-between;">
+                <div><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-emoji-smile-fill" id="emoji" viewBox="0 0 16 16" style="color: #17f818;background: #292b2c;border-radius: 22px;">
+  <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zM7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5zM4.285 9.567a.5.5 0 0 1 .683.183A3.498 3.498 0 0 0 8 11.5a3.498 3.498 0 0 0 3.032-1.75.5.5 0 1 1 .866.5A4.498 4.498 0 0 1 8 12.5a4.498 4.498 0 0 1-3.898-2.25.5.5 0 0 1 .183-.683zM10 8c-.552 0-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5S10.552 8 10 8z"/>
+</svg></div>
+                    <div><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-emoji-angry-fill" viewBox="0 0 16 16" id="emoji" style="color: #f81917;background: #292b2c;border-radius: 22px;">
+  <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zM4.053 4.276a.5.5 0 0 1 .67-.223l2 1a.5.5 0 0 1 .166.76c.071.206.111.44.111.687C7 7.328 6.552 8 6 8s-1-.672-1-1.5c0-.408.109-.778.285-1.049l-1.009-.504a.5.5 0 0 1-.223-.67zm.232 8.157a.5.5 0 0 1-.183-.683A4.498 4.498 0 0 1 8 9.5a4.5 4.5 0 0 1 3.898 2.25.5.5 0 1 1-.866.5A3.498 3.498 0 0 0 8 10.5a3.498 3.498 0 0 0-3.032 1.75.5.5 0 0 1-.683.183zM10 8c-.552 0-1-.672-1-1.5 0-.247.04-.48.11-.686a.502.502 0 0 1 .166-.761l2-1a.5.5 0 1 1 .448.894l-1.009.504c.176.27.285.64.285 1.049 0 .828-.448 1.5-1 1.5z"/>
+</svg>
+                </div>
+            </div>
+            <div style="width: 41px;height: 90%;background-color: whitesmoke;margin-left: 10px;background: linear-gradient(to bottom,#39ea5b,#ffff67,#de2b2b);">
+                <div style="width: 100%;height: 50%;border-bottom: 2px solid black;"></div>
+            </div>
+            <div style="width: 20px;height: 90%;display: flex;flex-direction: column;justify-content: space-between;margin-left: 5px;">
+                <div>+1</div>
+                <div>0</div>
+                <div>-1</div>
+            </div>
         </div>
     </div>
 
@@ -157,10 +176,58 @@
            document.getElementById("text_context").value="";
        }
    </script>
+<script>
+    let initial_screen=0;
+    function change_session(n){
+        if(initial_screen==0 && n==1){
+            var element = document.getElementById("voice_selector");
+            element.classList.add("active");
+            var element = document.getElementById("text_selector");
+            element.classList.remove("active");
+            let division=document.getElementById("recent_textarea");
+            let result=document.getElementById("secondary");
+            result.style.display="flex"
+            division.style.display="none"
+            let final=document.getElementById("new_message");
+            final.style.display="none"
+
+            initial_screen=1;
+        }
+        else if(initial_screen==1 && n==0){
+            var element = document.getElementById("text_selector");
+            element.classList.add("active");
+            var element = document.getElementById("voice_selector");
+            element.classList.remove("active");
+            let division=document.getElementById("recent_textarea");
+            let result=document.getElementById("secondary");
+            result.style.display="none"
+            division.style.display="block"
+            let final=document.getElementById("new_message");
+            final.style.display="flex"
+            initial_screen=0;
+        }
+    }
+</script>
 </html>
 
 
 <style>
+    #emoji{
+        animation: 1s pop_up infinite;
+        color: ;
+    }
+    @keyframes pop_up {
+        0%{
+            opacity: 1;
+        }
+        50%{
+            opacity: 0.5;
+        }
+        100%{
+            opacity: 1;
+        }
+    }
+
     .top_nav{
         position: fixed;
         top: 0px;
@@ -176,6 +243,9 @@
         font-size: 36px;
         font-family: fantasy;
 
+    }
+    .new_message{
+        display: flex;
     }
     .nav_auth{
         display: flex;
